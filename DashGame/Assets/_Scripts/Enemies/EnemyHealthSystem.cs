@@ -8,7 +8,9 @@ public class EnemyHealthSystem : MonoBehaviour
     {
         if(other.CompareTag("Player"))
         {
-            if(!other.GetComponent<PlayerMovement>().isDashing) return;
+            PlayerMovement playerMovement = other.GetComponent<PlayerMovement>();
+            if(!playerMovement.isDashing) return;
+            playerMovement.ResetDash();
             Destroy(this.gameObject);
         }
     }

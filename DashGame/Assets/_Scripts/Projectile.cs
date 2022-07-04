@@ -5,6 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     private Rigidbody2D _rigidBody;
+    private bool _reflected;
 
     private void Awake()
     {
@@ -23,12 +24,20 @@ public class Projectile : MonoBehaviour
         {
             var playerMovement = other.GetComponent<PlayerMovement>();
 
-            if (playerMovement.isDashing) _rigidBody.velocity *= -1;
+            if (playerMovement.isDashing) 
+            {
+                _reflected = true;
+                _rigidBody.velocity *= -1;
+            }
             else playerMovement.Die();
         }
         else if(other.CompareTag("Enemy"))
         {
-            //TODO: get enemy call die function
+            if(_reflected)
+            {
+                Destroy(other.gameObject);
+                Destroy(this.gameObject);
+            }
         }
         else
         {

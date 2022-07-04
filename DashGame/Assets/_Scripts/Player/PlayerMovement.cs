@@ -101,4 +101,9 @@ public class PlayerMovement : MonoBehaviour
     {
         Destroy(this.gameObject); //? Consider adding the killable interface;
     }
+
+    public void ResetDash()
+    {
+        _cooldownTimer = 0;
+    }
 }
