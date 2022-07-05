@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PathNode
 {
-    private Grid<PathNode> _grid;
+    private Grid _grid;
 
     public int x;
     public int y;
@@ -12,12 +12,12 @@ public class PathNode
     public bool isWalkable;
     public PathNode previousPathNode;
 
-    public PathNode(Grid<PathNode> grid, int x, int y)
+    public PathNode(Grid grid, int x, int y)
     {
         _grid = grid;
         this.x = x;
         this.y = y;
-        isWalkable = true;
+        isWalkable = Physics2D.OverlapBox(new Vector2(x - 30.4f, y - 40.4f), new Vector2(0.1f, 0.1f), 0f, 1 << LayerMask.NameToLayer("Wall")) == null;
     }
 
     public void SetIsWalkable()

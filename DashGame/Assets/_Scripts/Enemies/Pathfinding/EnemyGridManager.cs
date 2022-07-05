@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EnemyGridManager : MonoBehaviour
 {
-    private Pathfinding _pathfinding;
+    public static Pathfinding pathfinding;
 
-    private void Start()
+    private void Awake()
     {
-        _pathfinding = new Pathfinding(70, 70);
+        pathfinding = new Pathfinding(70, 70);
     }
 }

@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using TMPro;
 
-public class Grid<TGridType>
+public class Grid
 {
 
     public static TextMeshPro CreateWorldText(string text, Vector3 localPosition = default(Vector3))
@@ -31,16 +31,16 @@ public class Grid<TGridType>
     private int _height;
     private float _cellSize;
     private Vector3 _originPosition;
-    private TGridType[,] _gridArray;
+    private PathNode[,] _gridArray;
 
-    public Grid(int width, int height, float cellSize, Func<Grid<TGridType>, int, int, TGridType> createGridObject, Vector3 originPosition = default(Vector3))
+    public Grid(int width, int height, float cellSize, Func<Grid, int, int, PathNode> createGridObject, Vector3 originPosition = default(Vector3))
     {
         _width = width;
         _height = height;
         _cellSize = cellSize;
         _originPosition = originPosition;
         
-        _gridArray = new TGridType[width,height];
+        _gridArray = new PathNode[width,height];
 
         for(int x = 0; x < _gridArray.GetLength(0); x++)
         {
@@ -60,8 +60,9 @@ public class Grid<TGridType>
                 for (int y = 0; y < _gridArray.GetLength(1); y++)
                 {
                     _debugTextArray[x,y] = CreateWorldText(_gridArray[x,y]?.ToString(), GetWorldPosition(x,y) + new Vector3(_cellSize,_cellSize) * 0.1f);
-                    Debug.DrawLine(GetWorldPosition(x,y),GetWorldPosition(x,y+1),Color.white,100f);
-                    Debug.DrawLine(GetWorldPosition(x,y),GetWorldPosition(x+1,y),Color.white,100f);
+                    Color color = _gridArray[x,y].isWalkable ? Color.white : Color.red;
+                    Debug.DrawLine(GetWorldPosition(x,y),GetWorldPosition(x,y+1),color,100f);
+                    Debug.DrawLine(GetWorldPosition(x,y),GetWorldPosition(x+1,y),color,100f);
                 }
             }
             Debug.DrawLine(GetWorldPosition(0,_height),GetWorldPosition(_width,_height),Color.white,100f);
@@ -99,7 +100,7 @@ public class Grid<TGridType>
         y = Mathf.FloorToInt((worldPosition-_originPosition).y/_cellSize);
     }
 
-    public void SetGridObject(int x, int y, TGridType value)
+    public void SetGridObject(int x, int y, PathNode value)
     {
         if(x >= 0 && y >= 0 & x < _width && y < _height)
         {
@@ -108,23 +109,23 @@ public class Grid<TGridType>
         }
     }
 
-    public void SetGridObject(Vector3 worldPosition, TGridType value)
+    public void SetGridObject(Vector3 worldPosition, PathNode value)
     {
         int x,y;
         GetXY(worldPosition,out x, out y);
         SetGridObject(x,y,value);
     }
 
-    public TGridType GetGridObject(int x, int y)
+    public PathNode GetGridObject(int x, int y)
     {
         if(x >= 0 && y >= 0 && x < _width && y < _height)
         {
             return _gridArray[x,y];
         }
-        return default(TGridType);
+        return default(PathNode);
     }
 
-    public TGridType GetGridObject(Vector3 worldPosition)
+    public PathNode GetGridObject(Vector3 worldPosition)
     {
         int x,y;
         GetXY(worldPosition,out x, out y);

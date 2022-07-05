@@ -9,16 +9,16 @@ public class Pathfinding
     private const int MoveCost = 10;
     private const int DiagonalMoveCost = 14;
 
-    private Grid<PathNode> _grid;
+    private Grid _grid;
     private List<PathNode> _openNodes;
     private List<PathNode> _closedNodes;
 
     public Pathfinding(int width, int height)
     {
-        _grid = new Grid<PathNode>(width,height,1f,(Grid<PathNode> grid, int x, int y) => new PathNode(grid, x, y),new Vector3(-30.5f,-40.5f,0));
+        _grid = new Grid(width,height,1f,(Grid grid, int x, int y) => new PathNode(grid, x, y),new Vector3(-30.5f,-40.5f,0));
     }
 
-    public Grid<PathNode> GetGrid()
+    public Grid GetGrid()
     {
         return _grid;
     }
